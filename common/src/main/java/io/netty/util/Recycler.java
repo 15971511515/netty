@@ -263,7 +263,10 @@ public abstract class Recycler<T> {
                     Link head = link;
                     while (head != null) {
                         reclaimSpace(LINK_CAPACITY);
-                        head = head.next;
+                        Link next = head.next;
+                        // Unlink to help GC and guard against GC nepotism.
+                        head.next = null;
+                        head = next;
                     }
                 }
             }
